@@ -1,0 +1,8 @@
+.menuBar p {
+  display: inline;
+  margin-left: 35px;
+}
+.menuBar input {
+  width: 300px;
+  margin-left: 35px;
+}
