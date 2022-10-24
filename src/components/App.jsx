@@ -7,12 +7,11 @@ import CartItem from './CartItem';
 import Cart from './Cart';
 import { useState, useEffect } from 'react';
 
-const localCart = localStorage.getItem('cart');
-const localCartSize = localStorage.getItem('cartSize');
-const localCartTotal = localStorage.getItem('cartTotal');
-const localCartID = localStorage.getItem('cartID');
-
 function App() {
+  const localCart = localStorage.getItem('cart');
+  const localCartSize = localStorage.getItem('cartSize');
+  const localCartTotal = localStorage.getItem('cartTotal');
+  const localCartID = localStorage.getItem('cartID');
   const [cart, setCart] = useState(localCart ? JSON.parse(localCart) : []);
   const [cartSize, setCartSize] = useState(localCartSize ? JSON.parse(localCartSize) : 0);
   const [cartTotal, setCartTotal] = useState(localCartTotal ? JSON.parse(localCartTotal) : 0.0);
@@ -29,6 +28,7 @@ function App() {
   useEffect(() => {
     if (cartID) console.log(cart);
     saveToLocalStorage();
+    console.log('new');
   }, [cartSize]);
 
   //show the cart popup
