@@ -13,15 +13,15 @@ const localCartTotal = localStorage.getItem('cartTotal');
 const localCartID = localStorage.getItem('cartID');
 
 function App() {
+  const [cart, setCart] = useState(localCart ? JSON.parse(localCart) : []);
   const [cartSize, setCartSize] = useState(localCartSize ? JSON.parse(localCartSize) : 0);
   const [cartTotal, setCartTotal] = useState(localCartTotal ? JSON.parse(localCartTotal) : 0.0);
   const [cartID, setCartID] = useState(localCartID && cartSize ? JSON.parse(localCartID) : 0);
-  const [latestRoll, setLatestRoll] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
-  const [cart, setCart] = useState(localCart ? JSON.parse(localCart) : []);
-  const [sort, setSort] = useState('Name');
-  const [search, setSearch] = useState('');
   const [productList, setProductList] = useState(Inventory);
+  const [latestRoll, setLatestRoll] = useState('');
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('Name');
+  const [showPopup, setShowPopup] = useState(false);
   const [searchMatch, setSearchMatch] = useState(true);
   const [showCart, setShowCart] = useState(false);
 
@@ -52,18 +52,11 @@ function App() {
     setShowPopup(true);
   };
 
-  //Return the roll component to be displayed. Called by mapping on the list of products
-  function renderRolls(productList) {
-    return (
-      <Product
-        key={productList.id}
-        id={productList.id}
-        rollName={productList.name}
-        rollPrice={productList.price}
-        rollURL={productList.url}
-        addToCart={addToCart}
-      />
-    );
+  //Deletes item from cart
+  function deleteFromCart(id, price) {
+    setCartTotal(cartTotal - price);
+    setCartSize(cartSize - 1);
+    setCart(cart.filter((item) => item.id !== id));
   }
 
   //Sorts the list of products
@@ -97,15 +90,23 @@ function App() {
         glazing={cart.glazing}
         packSize={cart.packSize}
         price={cart.price}
-        deleteCart={deleteCart}
+        deleteFromCart={deleteFromCart}
       />
     );
   }
-  //Deletes item from cart
-  function deleteCart(id, price) {
-    setCartTotal(cartTotal - price);
-    setCartSize(cartSize - 1);
-    setCart(cart.filter((item) => item.id !== id));
+
+  //Return the roll component to be displayed. Called by mapping on the list of products
+  function renderRolls(productList) {
+    return (
+      <Product
+        key={productList.id}
+        id={productList.id}
+        rollName={productList.name}
+        rollPrice={productList.price}
+        rollURL={productList.url}
+        addToCart={addToCart}
+      />
+    );
   }
 
   function displayCart() {

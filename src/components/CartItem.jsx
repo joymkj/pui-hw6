@@ -2,7 +2,7 @@ import './CartItem.css';
 
 function CartItem(props) {
   function handleDelete() {
-    props.deleteCart(props.id, props.price);
+    props.deleteFromCart(props.id, props.price);
   }
 
   return (

@@ -7,7 +7,7 @@ function Product({ id, rollName, rollPrice, rollURL, addToCart }) {
   const [glazing, setGlazing] = useState('Keep Original');
   const [packSize, setPackSize] = useState(1);
 
-  function updateCart() {
+  function handleAddToCart() {
     let roll = {
       type: rollName,
       price: price,
@@ -95,7 +95,7 @@ function Product({ id, rollName, rollPrice, rollURL, addToCart }) {
                 <h2 className="price">$ {price}</h2>
               </td>
               <td className="cell-right">
-                <input type="button" className="add-to-cart" value="Add to Cart" onClick={() => updateCart()} />
+                <input type="button" className="add-to-cart" value="Add to Cart" onClick={() => handleAddToCart()} />
               </td>
             </tr>
           </tbody>
