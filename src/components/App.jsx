@@ -15,6 +15,7 @@ const localCartID = localStorage.getItem('cartID');
 function App() {
   const [cartSize, setCartSize] = useState(localCartSize ? JSON.parse(localCartSize) : 0);
   const [cartTotal, setCartTotal] = useState(localCartTotal ? JSON.parse(localCartTotal) : 0.0);
+  const [cartID, setCartID] = useState(localCartID && cartSize ? JSON.parse(localCartID) : 0);
   const [latestRoll, setLatestRoll] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [cart, setCart] = useState(localCart ? JSON.parse(localCart) : []);
@@ -22,19 +23,14 @@ function App() {
   const [search, setSearch] = useState('');
   const [productList, setProductList] = useState(Inventory);
   const [searchMatch, setSearchMatch] = useState(true);
-  const [cartID, setCartID] = useState(localCartID && cartSize ? JSON.parse(localCartID) : 0);
   const [showCart, setShowCart] = useState(false);
 
-  //Adds rolls to cart. Called when you click the Add to Cart button
-  const updateCart = (Roll) => {
-    Roll.id = cartID;
-    setCartID(cartID + 1);
-    setCartSize(cartSize + 1);
-    setCartTotal(cartTotal + parseFloat(Roll.price));
-    setLatestRoll(Roll);
-    cart.push(Roll);
-    setShowPopup(true);
-  };
+  //called during any modification to the cart
+  useEffect(() => {
+    if (cartID) console.log(cart);
+    saveToLocalStorage();
+    console.log('still working');
+  }, [cartSize]);
 
   //show the cart popup
   useEffect(() => {
@@ -46,6 +42,17 @@ function App() {
     };
   }, [showPopup]);
 
+  //Adds rolls to cart. Called when you click the Add to Cart button
+  const addToCart = (Roll) => {
+    Roll.id = cartID;
+    setCartID(cartID + 1);
+    setCartSize(cartSize + 1);
+    setCartTotal(cartTotal + parseFloat(Roll.price));
+    setLatestRoll(Roll);
+    cart.push(Roll);
+    setShowPopup(true);
+  };
+
   //Return the roll component to be displayed. Called by mapping on the list of products
   function renderRolls(productList) {
     return (
@@ -55,7 +62,7 @@ function App() {
         rollName={productList.name}
         rollPrice={productList.price}
         rollURL={productList.url}
-        updateCart={updateCart}
+        addToCart={addToCart}
       />
     );
   }
@@ -105,12 +112,6 @@ function App() {
   function displayCart() {
     return <Cart cartSize={cartSize} renderCart={renderCart} cart={cart} cartTotal={cartTotal} />;
   }
-
-  //called during any modification to the cart
-  useEffect(() => {
-    if (cartSize && cartID) console.log(cart);
-    saveToLocalStorage();
-  }, [cartSize]);
 
   //saves data to local storage
   function saveToLocalStorage() {

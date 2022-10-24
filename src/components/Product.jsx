@@ -2,19 +2,19 @@ import Inventory, { glazingPrice, packPrice } from './Inventory.jsx';
 import './Product.css';
 import { useEffect, useState } from 'react';
 
-function Product({ id, rollName, rollPrice, rollURL, updateCart }) {
+function Product({ id, rollName, rollPrice, rollURL, addToCart }) {
   const [price, setPrice] = useState(parseFloat(rollPrice));
   const [glazing, setGlazing] = useState('Keep Original');
   const [packSize, setPackSize] = useState(1);
 
-  function addToCart() {
+  function updateCart() {
     let roll = {
       type: rollName,
       price: price,
       glazing: glazing,
       packSize: packSize,
     };
-    updateCart(roll);
+    addToCart(roll);
   }
 
   useEffect(() => {
@@ -95,7 +95,7 @@ function Product({ id, rollName, rollPrice, rollURL, updateCart }) {
                 <h2 className="price">$ {price}</h2>
               </td>
               <td className="cell-right">
-                <input type="button" className="add-to-cart" value="Add to Cart" onClick={() => addToCart()} />
+                <input type="button" className="add-to-cart" value="Add to Cart" onClick={() => updateCart()} />
               </td>
             </tr>
           </tbody>
