@@ -29,7 +29,6 @@ function App() {
   useEffect(() => {
     if (cartID) console.log(cart);
     saveToLocalStorage();
-    console.log('still working');
   }, [cartSize]);
 
   //show the cart popup
